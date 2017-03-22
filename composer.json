@@ -1,5 +1,5 @@
 {
-    "name": "graphaware/neo4j-php-ogm",
+    "name": "edizduman/neo4j-php-ogm",
     "description": "PHP Object Graph Mapper for Neo4j",
     "license": "Apache V2",
     "keywords": [
@@ -12,10 +12,10 @@
         "database",
         "cypher"
     ],
-    "homepage": "https://github.com/graphaware/neo4j-php-ogm",
+    "homepage": "https://github.com/edizduman/neo4j-php-ogm",
     "authors": [{
-        "name": "Christophe Willemsen",
-        "email": "christophe@graphaware.com"
+        "name": "Ediz Duman",
+        "email": "ben@edizduman.com"
     }, {
         "name": "GraphAware Ltd",
         "email": "php@graphaware.com"
