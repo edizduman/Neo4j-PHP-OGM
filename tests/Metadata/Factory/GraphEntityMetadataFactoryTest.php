@@ -151,9 +151,6 @@ class GraphEntityMetadataFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(Movie::class, $moviesRelation->getTargetEntity());
         $this->assertSame(true, $moviesRelation->isCollection());
         $this->assertSame('actors', $moviesRelation->getMappedByProperty());
-        $this->assertSame(true, $moviesRelation->isLazy());
-        $this->assertSame('name', $moviesRelation->getOrderByPropery());
-        $this->assertSame('DESC', $moviesRelation->getOrder());
     }
 
     /**

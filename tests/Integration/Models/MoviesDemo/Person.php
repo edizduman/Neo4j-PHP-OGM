@@ -88,6 +88,11 @@ class Person
         return $this->movies;
     }
 
+    public function removeMovie(Movie $movie)
+    {
+        return $this->movies->removeElement($movie);
+    }
+
     /**
      * @param string $name
      */

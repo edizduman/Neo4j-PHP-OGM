@@ -186,7 +186,7 @@ final class RelationshipMetadata
     /**
      * @return string
      */
-    public function getOrderByPropery()
+    public function getOrderByProperty()
     {
         return $this->orderBy->property;
     }

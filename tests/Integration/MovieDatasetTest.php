@@ -94,4 +94,34 @@ class MovieDatasetTest extends IntegrationTestCase
         $this->assertGraphExist('(m:Movie {title:"Pirates Of The Caribbean"})<-[:ACTED_IN]-(p:Person {name:"Johnny Depp"})');
         $this->assertCount(1, $this->em->getRepository(Person::class)->findBy(['name' => 'Johnny Depp']));
     }
+
+    /**
+     * @see https://github.com/graphaware/neo4j-php-ogm/issues/104
+     * @group issue-104
+     */
+    public function testRelationshipReferencesCanBeRemoved()
+    {
+        /** @var Person $person */
+        $person = $this->em->getRepository(Person::class)->findOneBy(['name' => 'Tom Hanks']);
+        /** @var Movie $movie */
+        $movie = $this->em->getRepository(Movie::class)->findOneBy(['title' => 'Cast Away']);
+
+        $castFromPerson = null;
+        foreach ($person->getMovies() as $m) {
+            if ('Cast Away' === $m->getTitle()) {
+                $castFromPerson = $m;
+            }
+        }
+        $this->assertNotNull($castFromPerson);
+        $c = count($person->getMovies());
+        $this->assertEquals(spl_object_hash($castFromPerson), spl_object_hash($movie));
+        
+        $person->getMovies()->removeElement($movie);
+        $movie->getActors()->removeElement($person);
+        $this->assertEquals($c-1, count($person->getMovies()));
+        $this->em->flush();
+
+        $this->assertGraphNotExist('(p:Person {name:"Tom Hanks"})-[:ACTED_IN]->(m:Movie {title:"Cast Away"})');
+
+    }
 }

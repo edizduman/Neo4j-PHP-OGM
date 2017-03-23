@@ -96,7 +96,7 @@ class EntityHydrator
                 $mappedRel = $targetMeta->getRelationship($mappedBy);
                 if ($mappedRel->isCollection()) {
                     $mappedRel->initializeCollection($item);
-                    $mappedRel->getValue($item)->add($sourceEntity);
+                    $this->_em->getUnitOfWork()->addManagedRelationshipReference($sourceEntity, $item, $relationshipMetadata->getPropertyName(), $relationshipMetadata);
                 } else {
                     $mappedRel->setValue($item, $sourceEntity);
                 }

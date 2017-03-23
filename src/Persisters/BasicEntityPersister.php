@@ -237,7 +237,7 @@ class BasicEntityPersister
         $cypher .= 'RETURN '.$targetAlias.' AS '.$targetAlias.' ';
 
         if ($relationshipMeta->hasOrderBy()) {
-            $cypher .= 'ORDER BY '.$targetAlias.'.'.$relationshipMeta->getOrderByPropery().' '.$relationshipMeta->getOrder();
+            $cypher .= 'ORDER BY '.$targetAlias.'.'.$relationshipMeta->getOrderByProperty().' '.$relationshipMeta->getOrder();
         }
 
         $params = ['id' => $sourceEntityId];

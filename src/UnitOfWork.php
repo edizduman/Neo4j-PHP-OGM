@@ -241,6 +241,7 @@ class UnitOfWork
             );
             $relStack->push($statement->text(), $statement->parameters());
         }
+//        var_dump($relStack);
 
         if (count($this->relationshipsScheduledForDelete) > 0) {
             foreach ($this->relationshipsScheduledForDelete as $toDelete) {
@@ -367,7 +368,6 @@ class UnitOfWork
         ];
         $this->addManaged($entityA);
         $this->addManaged($entityB);
-        //print_r($this->managedRelationshipReferences);
     }
 
     public function detectRelationshipEntityChanges()
@@ -415,10 +415,10 @@ class UnitOfWork
     {
         foreach ($this->managedRelationshipReferences as $oid => $reference) {
             $entity = $this->entitiesById[$this->entityIds[$oid]];
-            $reflO = $this->entityManager->getClassMetadataFor(get_class($entity));
             foreach ($reference as $field => $info) {
-                $property = $reflO->getRelationship($field);
-                $value = $property->getValue($entity);
+                /** @var RelationshipMetadata $relMeta */
+                $relMeta = $info[0]['rel'];
+                $value = $relMeta->getValue($entity);
                 if ($value instanceof ArrayCollection || $value instanceof AbstractLazyCollection) {
                     $value = $value->toArray();
                 }
@@ -437,6 +437,11 @@ class UnitOfWork
 
                     $added = array_udiff($value, $currentValue, $compare);
                     $removed = array_udiff($currentValue, $value, $compare);
+
+                    foreach ($value as $t) {
+
+                    }
+
                     foreach ($added as $add) {
                         // Since this is the same property, it should be ok to re-use the first relationship
                         $this->scheduleRelationshipReferenceForCreate($entity, $add, $info[0]['rel']);
@@ -458,6 +463,9 @@ class UnitOfWork
                 }
             }
         }
+
+//        var_dump("relationships schduled for create : " . count($this->getRelationshipsScheduledForCreated()));
+//        var_dump("relationships scheduled for remove : " . count($this->getRelationshipsScheduledForDelete()));
     }
 
     public function scheduleRelationshipReferenceForCreate($entity, $target, RelationshipMetadata $relationship)
